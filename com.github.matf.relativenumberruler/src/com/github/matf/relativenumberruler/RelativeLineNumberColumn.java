@@ -49,6 +49,11 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 	}
 	
 	@Override
+	protected int computeNumberOfDigits() {
+		return super.computeNumberOfDigits() + (isAbsoluteNumberRulerEnabled ? 1 : 0);
+	}
+
+	@Override
 	public Control createControl(CompositeRuler parentRuler, Composite parentControl) {
 		initialize();
 		
