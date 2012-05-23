@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.github.matf.relativenumberruler.feature"
+      label="Relative Line Number Ruler Feature"
+      version="1.0.0.qualifier"
+      provider-name="http://github.com/matf">
+
+   <description>
+      Relative Line Number Ruler Feature
+   </description>
+
+   <copyright>
+      EPL
+   </copyright>
+
+   <license url="">
+      EPL
+   </license>
+
+   <plugin
+         id="com.github.matf.relativenumberruler"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

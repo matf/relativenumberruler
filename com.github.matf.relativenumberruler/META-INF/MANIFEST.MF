@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Relative Line Number Ruler
+Bundle-SymbolicName: com.github.matf.relativenumberruler;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.github.matf.relativenumberruler.Activator
+Bundle-Vendor: http://github.com/matf
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy

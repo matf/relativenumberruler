@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.workbench.texteditor.rulerColumns">
+      <column
+            class="com.github.matf.relativenumberruler.RelativeLineNumberColumn"
+            enabled="true"
+            global="true"
+            id="com.github.matf.relativenumberruler"
+            includeInMenu="true"
+            name="Relative Line Number Ruler">
+         <placement
+               gravity="1.0">
+         </placement>
+         <targetClass
+               class="org.eclipse.ui.texteditor.AbstractDecoratedTextEditor">
+         </targetClass>
+      </column>
+   </extension>
+
+</plugin>
