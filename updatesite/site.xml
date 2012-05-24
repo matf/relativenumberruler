@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/com.github.matf.relativenumberruler.feature_1.0.0.201205240905.jar" id="com.github.matf.relativenumberruler.feature" version="1.0.0.201205240905">
+   <feature url="features/com.github.matf.relativenumberruler.feature_1.0.0.201205240947.jar" id="com.github.matf.relativenumberruler.feature" version="1.0.0.201205240947">
       <category name="Relative Number Ruler"/>
    </feature>
    <category-def name="Relative Number Ruler" label="Relative Number Ruler"/>
