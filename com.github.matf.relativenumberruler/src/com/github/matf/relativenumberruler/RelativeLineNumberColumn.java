@@ -43,9 +43,9 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 	protected String createDisplayString(int line) {
 		if (fCachedTextWidget == null || fCachedTextWidget.isDisposed()) return "";
 
-		int modelLine = JFaceTextUtil.widgetLine2ModelLine(fCachedTextViewer, currentLine);
+		int modelLine = JFaceTextUtil.modelLineToWidgetLine(fCachedTextViewer, line);
+		String lineStr = Integer.toString(Math.abs(currentLine - modelLine));
 
-		String lineStr = Integer.toString(Math.abs(modelLine - line));
 		return isAbsoluteNumberRulerEnabled ? " " + lineStr : lineStr;
 	}
 
