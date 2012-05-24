@@ -30,7 +30,7 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 	private static final String BG_COLOR_KEY = AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND;
 	private static final String USE_DEFAULT_BG_KEY = AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND_SYSTEM_DEFAULT;
 	private static final String ABS_RULER = AbstractDecoratedTextEditorPreferenceConstants.EDITOR_LINE_NUMBER_RULER;
-	
+
 	private ITextEditor editor;
 	private RulerColumnDescriptor descriptor;
 	private StyledText fCachedTextWidget;
@@ -42,13 +42,13 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 	@Override
 	protected String createDisplayString(int line) {
 		if (fCachedTextWidget == null || fCachedTextWidget.isDisposed()) return "";
-		
+
 		int modelLine = JFaceTextUtil.widgetLine2ModelLine(fCachedTextViewer, currentLine);
 
 		String lineStr = Integer.toString(Math.abs(modelLine - line));
 		return isAbsoluteNumberRulerEnabled ? " " + lineStr : lineStr;
 	}
-	
+
 	@Override
 	protected int computeNumberOfDigits() {
 		return super.computeNumberOfDigits() + (isAbsoluteNumberRulerEnabled ? 1 : 0);
@@ -57,13 +57,13 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 	@Override
 	public void redraw() {
 		lastDrawnLine = currentLine;
-	    super.redraw();
+		super.redraw();
 	}
 
 	@Override
 	public Control createControl(CompositeRuler parentRuler, Composite parentControl) {
 		initialize();
-		
+
 		fCachedTextViewer = parentRuler.getTextViewer();
 		fCachedTextWidget = fCachedTextViewer.getTextWidget();
 		fCachedTextWidget.addCaretListener(new CaretListener() {
@@ -75,7 +75,7 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 				}
 			}
 		});
-		
+
 		return super.createControl(parentRuler, parentControl);
 	}
 
@@ -85,7 +85,7 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 		updateForegroundColor(store);
 		updateBackgroundColor(store);
 		updateAbsoluteNumberRulerEnabled(store);
-		
+
 		// listen to changes of color preferences, redraw if changed
 		PropertyEventDispatcher fDispatcher = new PropertyEventDispatcher(store);
 
@@ -140,11 +140,11 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 	protected ISharedTextColors getSharedColors() {
 		return EditorsPlugin.getDefault().getSharedTextColors();
 	}
-	
+
 	private IPreferenceStore getPreferenceStore() {
 		return EditorsUI.getPreferenceStore();
 	}
-	
+
 	private void updateForegroundColor(IPreferenceStore store) {
 		RGB rgb=  getColorFromStore(store, FG_COLOR_KEY);
 		if (rgb == null)
