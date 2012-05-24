@@ -43,9 +43,9 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 		if (fCachedTextWidget == null || fCachedTextWidget.isDisposed()) return "";
 		
 		int currentLine = fCachedTextWidget.getLineAtOffset(fCachedTextWidget.getCaretOffset());
-		int modelLine = JFaceTextUtil.modelLineToWidgetLine(fCachedTextViewer, line);
+		int modelLine = JFaceTextUtil.widgetLine2ModelLine(fCachedTextViewer, currentLine);
 
-		String lineStr = Integer.toString(Math.abs(currentLine - modelLine));
+		String lineStr = Integer.toString(Math.abs(modelLine - line));
 		return isAbsoluteNumberRulerEnabled ? " " + lineStr : lineStr;
 	}
 	
@@ -56,6 +56,7 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 
 	@Override
 	public void redraw() {
+		System.out.println("Redraw!!!");
 		lastDrawnLine = fCachedTextWidget.getLineAtOffset(fCachedTextWidget.getCaretOffset());
 	    super.redraw();
 	}
@@ -68,11 +69,11 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 		fCachedTextWidget = fCachedTextViewer.getTextWidget();
 		fCachedTextWidget.addCaretListener(new CaretListener() {
 			public void caretMoved(CaretEvent event) {
-        		int currentLine = fCachedTextWidget.getLineAtOffset(event.caretOffset);
-        		// ensure the rules only gets redrawn when relative line number changes.
-			    if (lastDrawnLine != currentLine) {
-			        redraw();
-			    }
+				int currentLine = fCachedTextWidget.getLineAtOffset(event.caretOffset);
+				// ensure the ruler only gets redrawn when relative line number changes.
+				if (lastDrawnLine != currentLine) {
+					redraw();
+				}
 			}
 		});
 		
