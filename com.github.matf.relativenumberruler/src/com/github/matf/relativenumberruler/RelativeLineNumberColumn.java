@@ -26,16 +26,18 @@ import org.eclipse.ui.texteditor.rulers.RulerColumnDescriptor;
 
 @SuppressWarnings("restriction")
 public class RelativeLineNumberColumn extends LineNumberRulerColumn implements IContributedRulerColumn {
+	
 	private static final String FG_COLOR_KEY = AbstractDecoratedTextEditorPreferenceConstants.EDITOR_LINE_NUMBER_RULER_COLOR;
 	private static final String BG_COLOR_KEY = AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND;
 	private static final String USE_DEFAULT_BG_KEY = AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND_SYSTEM_DEFAULT;
-	private static final String ABS_RULER = AbstractDecoratedTextEditorPreferenceConstants.EDITOR_LINE_NUMBER_RULER;
+	
+	private static final String PREFIX = " ";
+	private static final int PREFIX_LENGTH = 1;
 
 	private ITextEditor editor;
 	private RulerColumnDescriptor descriptor;
 	private StyledText fCachedTextWidget;
 	private ITextViewer fCachedTextViewer;
-	private boolean isAbsoluteNumberRulerEnabled;
 	private int lastDrawnLine = -1;
 	private int currentLine = 0;
 
@@ -46,12 +48,12 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 		int modelLine = JFaceTextUtil.modelLineToWidgetLine(fCachedTextViewer, line);
 		String lineStr = Integer.toString(Math.abs(currentLine - modelLine));
 
-		return isAbsoluteNumberRulerEnabled ? " " + lineStr : lineStr;
+		return PREFIX + lineStr;
 	}
 
 	@Override
 	protected int computeNumberOfDigits() {
-		return super.computeNumberOfDigits() + (isAbsoluteNumberRulerEnabled ? 1 : 0);
+		return super.computeNumberOfDigits() + PREFIX_LENGTH;
 	}
 
 	@Override
@@ -84,17 +86,10 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 		final IPreferenceStore store = getPreferenceStore();
 		updateForegroundColor(store);
 		updateBackgroundColor(store);
-		updateAbsoluteNumberRulerEnabled(store);
 
 		// listen to changes of color preferences, redraw if changed
 		PropertyEventDispatcher fDispatcher = new PropertyEventDispatcher(store);
 
-		fDispatcher.addPropertyChangeListener(ABS_RULER, new IPropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent event) {
-				updateAbsoluteNumberRulerEnabled(store);
-				redraw();
-			}
-		});
 		fDispatcher.addPropertyChangeListener(FG_COLOR_KEY, new IPropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent event) {
 				updateForegroundColor(store);
@@ -109,10 +104,6 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 		};
 		fDispatcher.addPropertyChangeListener(BG_COLOR_KEY, backgroundHandler);
 		fDispatcher.addPropertyChangeListener(USE_DEFAULT_BG_KEY, backgroundHandler);
-	}
-
-	private void updateAbsoluteNumberRulerEnabled(IPreferenceStore store) {
-		isAbsoluteNumberRulerEnabled = store.getBoolean(ABS_RULER);
 	}
 
 	public RulerColumnDescriptor getDescriptor() {
