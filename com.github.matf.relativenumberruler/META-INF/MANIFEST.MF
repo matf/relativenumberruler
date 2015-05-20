@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Relative Line Number Ruler
 Bundle-SymbolicName: com.github.matf.relativenumberruler;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: com.github.matf.relativenumberruler.Activator
 Bundle-Vendor: http://github.com/matf
 Require-Bundle: org.eclipse.ui,
