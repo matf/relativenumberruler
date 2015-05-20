@@ -24,6 +24,8 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.rulers.IContributedRulerColumn;
 import org.eclipse.ui.texteditor.rulers.RulerColumnDescriptor;
 
+import com.github.matf.relativenumberruler.preferences.PreferenceConstants;
+
 @SuppressWarnings("restriction")
 public class RelativeLineNumberColumn extends LineNumberRulerColumn implements IContributedRulerColumn {
 	
@@ -31,7 +33,8 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 	private static final String BG_COLOR_KEY = AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND;
 	private static final String USE_DEFAULT_BG_KEY = AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND_SYSTEM_DEFAULT;
 	
-	private static final String PREFIX = " ";
+	private static final char PREFIX = ' ';
+	private static final char CURRENT_LINE_PREFIX = '>';
 	private static final int PREFIX_LENGTH = 1;
 
 	private ITextEditor editor;
@@ -40,15 +43,26 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 	private ITextViewer fCachedTextViewer;
 	private int lastDrawnLine = -1;
 	private int currentLine = 0;
+	private boolean showCurrentLineNumberAbsolute;
 
 	@Override
 	protected String createDisplayString(int line) {
 		if (fCachedTextWidget == null || fCachedTextWidget.isDisposed()) return "";
 
-		int modelLine = JFaceTextUtil.modelLineToWidgetLine(fCachedTextViewer, line);
-		String lineStr = Integer.toString(Math.abs(currentLine - modelLine));
-
-		return PREFIX + lineStr;
+		int widgetLine = JFaceTextUtil.modelLineToWidgetLine(fCachedTextViewer, line);
+		int lineDelta = Math.abs(currentLine - widgetLine);
+		int displayedLine;
+		char prefix;
+		if (showCurrentLineNumberAbsolute && lineDelta == 0) {
+			displayedLine = widgetLine + 1;
+			prefix = CURRENT_LINE_PREFIX;
+		} else {
+			displayedLine = lineDelta;
+			prefix = PREFIX;
+		}
+		
+		String lineStr = Integer.toString(displayedLine);
+		return prefix + lineStr;
 	}
 
 	@Override
@@ -82,6 +96,27 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 	}
 
 	private void initialize() {
+		initializeColors();
+		initializePreferences();
+	}
+
+	private void initializePreferences() {
+		final IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		updateShowCurrentLineNumberAbsolute(preferenceStore);
+		PropertyEventDispatcher propertyEventDispatcher = new PropertyEventDispatcher(preferenceStore);
+		propertyEventDispatcher.addPropertyChangeListener(PreferenceConstants.SHOW_CURRENT_LINE_NUMBER_ABSOLUTE, new IPropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent event) {
+				updateShowCurrentLineNumberAbsolute(preferenceStore);
+				redraw();
+			}
+		});
+	}
+
+	private void updateShowCurrentLineNumberAbsolute(IPreferenceStore preferenceStore) {
+		showCurrentLineNumberAbsolute = preferenceStore.getBoolean(PreferenceConstants.SHOW_CURRENT_LINE_NUMBER_ABSOLUTE);
+	}
+
+	private void initializeColors() {
 		// read color preferences
 		final IPreferenceStore store = getPreferenceStore();
 		updateForegroundColor(store);

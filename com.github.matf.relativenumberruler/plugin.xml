@@ -23,7 +23,7 @@
       <page
             class="com.github.matf.relativenumberruler.preferences.RelativeNumberRulerPreferencePage"
             id="com.github.matf.relativenumberruler.preferences.RelativeNumberRulerPreferencePage"
-            name="Relative Number Ruler Preferences">
+            name="Relative Number Ruler">
       </page>
    </extension>
    <extension
