@@ -18,5 +18,19 @@
          </targetClass>
       </column>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.github.matf.relativenumberruler.preferences.RelativeNumberRulerPreferencePage"
+            id="com.github.matf.relativenumberruler.preferences.RelativeNumberRulerPreferencePage"
+            name="Relative Number Ruler Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.github.matf.relativenumberruler.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
 
 </plugin>
