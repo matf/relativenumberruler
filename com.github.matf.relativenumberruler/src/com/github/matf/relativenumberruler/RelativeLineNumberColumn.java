@@ -54,7 +54,7 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 		int displayedLine;
 		char prefix;
 		if (showCurrentLineNumberAbsolute && lineDelta == 0) {
-			displayedLine = widgetLine + 1;
+			displayedLine = line + 1;
 			prefix = CURRENT_LINE_PREFIX;
 		} else {
 			displayedLine = lineDelta;
