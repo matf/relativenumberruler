@@ -1,5 +1,7 @@
 package com.github.matf.relativenumberruler;
 
+import java.util.Arrays;
+
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.ITextViewer;
@@ -32,10 +34,6 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 	private static final String FG_COLOR_KEY = AbstractDecoratedTextEditorPreferenceConstants.EDITOR_LINE_NUMBER_RULER_COLOR;
 	private static final String BG_COLOR_KEY = AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND;
 	private static final String USE_DEFAULT_BG_KEY = AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND_SYSTEM_DEFAULT;
-	
-	private static final char PREFIX = ' ';
-	private static final char CURRENT_LINE_PREFIX = '>';
-	private static final int PREFIX_LENGTH = 1;
 
 	private ITextEditor editor;
 	private RulerColumnDescriptor descriptor;
@@ -44,6 +42,9 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 	private int lastDrawnLine = -1;
 	private int currentLine = 0;
 	private boolean showCurrentLineNumberAbsolute;
+	private String emptyPrefix;
+	private String currentLinePrefix;
+	private int prefixLength;
 
 	@Override
 	protected String createDisplayString(int line) {
@@ -52,13 +53,13 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 		int widgetLine = JFaceTextUtil.modelLineToWidgetLine(fCachedTextViewer, line);
 		int lineDelta = Math.abs(currentLine - widgetLine);
 		int displayedLine;
-		char prefix;
+		String prefix;
 		if (showCurrentLineNumberAbsolute && lineDelta == 0) {
 			displayedLine = line + 1;
-			prefix = CURRENT_LINE_PREFIX;
+			prefix = currentLinePrefix;
 		} else {
 			displayedLine = lineDelta;
-			prefix = PREFIX;
+			prefix = emptyPrefix;
 		}
 		
 		String lineStr = Integer.toString(displayedLine);
@@ -67,7 +68,7 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 
 	@Override
 	protected int computeNumberOfDigits() {
-		return super.computeNumberOfDigits() + PREFIX_LENGTH;
+		return super.computeNumberOfDigits() + prefixLength;
 	}
 
 	@Override
@@ -110,10 +111,29 @@ public class RelativeLineNumberColumn extends LineNumberRulerColumn implements I
 				redraw();
 			}
 		});
+		
+		updateLinePrefix(preferenceStore);
+		propertyEventDispatcher.addPropertyChangeListener(PreferenceConstants.CURRENT_LINE_PREFIX, new IPropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent event) {
+				updateLinePrefix(preferenceStore);
+				updateNumberOfDigits();
+				computeIndentations();
+				layout(true);
+			}
+		});
 	}
 
 	private void updateShowCurrentLineNumberAbsolute(IPreferenceStore preferenceStore) {
 		showCurrentLineNumberAbsolute = preferenceStore.getBoolean(PreferenceConstants.SHOW_CURRENT_LINE_NUMBER_ABSOLUTE);
+	}
+	
+	private void updateLinePrefix(IPreferenceStore preferenceStore) {
+		currentLinePrefix = preferenceStore.getString(PreferenceConstants.CURRENT_LINE_PREFIX);
+		prefixLength = currentLinePrefix.length();
+
+		char[] empty = new char[prefixLength];
+		Arrays.fill(empty, ' ');
+		emptyPrefix = String.valueOf(empty);
 	}
 
 	private void initializeColors() {

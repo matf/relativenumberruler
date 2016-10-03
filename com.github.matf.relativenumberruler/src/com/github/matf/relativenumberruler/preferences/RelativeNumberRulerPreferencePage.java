@@ -18,6 +18,11 @@ public class RelativeNumberRulerPreferencePage extends
 				PreferenceConstants.SHOW_CURRENT_LINE_NUMBER_ABSOLUTE,
 				"&Show absolute value for current line number",
 				getFieldEditorParent()));
+		
+		addField(new StringFieldEditor(
+				PreferenceConstants.CURRENT_LINE_PREFIX,
+				"&Prefix for absolute value of current line",
+				getFieldEditorParent()));
 	}
 
 	public void init(IWorkbench workbench) {
