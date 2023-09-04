@@ -1,36 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension
-         point="org.eclipse.ui.workbench.texteditor.rulerColumns">
-      <column
-            class="com.github.matf.relativenumberruler.RelativeLineNumberColumn"
-            enabled="true"
-            global="true"
-            id="com.github.matf.relativenumberruler"
-            includeInMenu="true"
-            name="Relative Line Number Ruler">
-         <placement
-               gravity="1.0">
-         </placement>
-         <targetClass
-               class="org.eclipse.ui.texteditor.AbstractDecoratedTextEditor">
-         </targetClass>
-      </column>
-   </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="com.github.matf.relativenumberruler.preferences.RelativeNumberRulerPreferencePage"
-            id="com.github.matf.relativenumberruler.preferences.RelativeNumberRulerPreferencePage"
-            name="Relative Number Ruler">
-      </page>
-   </extension>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="com.github.matf.relativenumberruler.preferences.PreferenceInitializer">
-      </initializer>
-   </extension>
-
+	<extension
+		point="org.eclipse.ui.workbench.texteditor.rulerColumns">
+		<column
+			class="com.github.matf.relativenumberruler.RelativeLineNumberColumn"
+			enabled="true"
+			global="true"
+			id="com.github.matf.relativenumberruler"
+			includeInMenu="true"
+			name="Relative Line Number Ruler">
+			<placement
+				gravity="1.0">
+			</placement>
+			<targetClass
+				class="org.eclipse.ui.texteditor.AbstractDecoratedTextEditor">
+			</targetClass>
+		</column>
+	</extension>
+	<extension
+		point="org.eclipse.ui.preferencePages">
+		<page
+			class="com.github.matf.relativenumberruler.preferences.RelativeNumberRulerPreferencePage"
+			id="com.github.matf.relativenumberruler.preferences.RelativeNumberRulerPreferencePage"
+			name="Relative Number Ruler">
+		</page>
+	</extension>
+	<extension
+		point="org.eclipse.core.runtime.preferences">
+		<initializer
+			class="com.github.matf.relativenumberruler.preferences.PreferenceInitializer">
+		</initializer>
+	</extension>
+	<extension
+		point="org.eclipse.ui.commands">
+		<category
+			id="com.github.matf.relativenumberruler.bindings"
+			name="Relative Number Ruler">
+		</category>
+		<command
+			categoryId="com.github.matf.relativenumberruler.bindings"
+			name="Relative number ruler jump up"
+			id="com.github.matf.relativenumberruler.bindings.RelativeJumpUp"
+			description="Go up specified amount of lines according to relative number ruler">
+		</command>
+		<command
+			categoryId="com.github.matf.relativenumberruler.bindings"
+			name="Relative number ruler jump down"
+			id="com.github.matf.relativenumberruler.bindings.RelativeJumpDown"
+			description="Go down specified amount of lines according to relative number ruler">
+		</command>
+	</extension>
+	<extension
+		point="org.eclipse.ui.bindings">
+		<key sequence="Alt+K"
+			commandId="com.github.matf.relativenumberruler.bindings.RelativeJumpUp"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" />
+		<key sequence="Alt+J"
+			commandId="com.github.matf.relativenumberruler.bindings.RelativeJumpDown"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" />
+	</extension>
+	<extension
+		point="org.eclipse.ui.handlers">
+		<handler
+			class="bindings.RelativeJumpUp"
+			commandId="com.github.matf.relativenumberruler.bindings.RelativeJumpUp">
+		</handler>
+		<handler
+			class="bindings.RelativeJumpDown"
+			commandId="com.github.matf.relativenumberruler.bindings.RelativeJumpDown">
+		</handler>
+	</extension>
 </plugin>
